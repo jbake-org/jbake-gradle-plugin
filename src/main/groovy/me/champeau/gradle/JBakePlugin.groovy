@@ -20,6 +20,7 @@ import org.gradle.api.Project
 
 class JBakePlugin implements Plugin<Project> {
     void apply(Project project) {
-        project.task('jbake', type:JBakeTask)
+        project.task('jbake', type: JBakeTask)
+        project.task('serve', type: ServerTask)
     }
 }

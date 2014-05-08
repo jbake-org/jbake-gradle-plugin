@@ -30,6 +30,8 @@ apply plugin: 'jbake'
 This will add a `bake` task to your build, which will search for a standard http://www.jbake.org[JBake] source tree in
 `src/jbake` and generate content into `$buildDir/jbake` (typically `build/jbake`).
 
+It also adds a `serve` task which will start a jetty server on port 8820 to serve the static site.
+
 == Configuration
 === Plugin configuration
 
