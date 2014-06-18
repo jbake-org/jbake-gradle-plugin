@@ -7,11 +7,11 @@ import org.gradle.api.Project
  */
 class Resources {
 
-    static sourceDir(Project p) {
+    static File sourceDir(Project p) {
         sourceDir(p.projectDir)
     }
 
-    static outputDir(Project p) {
+    static File outputDir(Project p) {
         outputDir(p.buildDir)
     }
 
@@ -21,6 +21,13 @@ class Resources {
 
     static File outputDir(File f) {
         new File("$f/jbake")
+    }
+
+    static Boolean deleteDirOrThrow(File f) {
+        def b = f.deleteDir()
+        if (!b) {
+            throw new Exception("File $f not deleted")
+        }
     }
 
 }

@@ -20,14 +20,14 @@ import org.gradle.api.Project
 
 class JBakePlugin implements Plugin<Project> {
     void apply(Project project) {
-        project.task('jbake', type: JBakeTask)
-        project.task('jbakeInit', type: InitTask)
-        project.task('jbakeServer', type: ServerTask)
-        project.task('jbakeRemove', type: RemoveTask)
-        project.task('jbakeClean', type: CleanTask)
+        def tasks = [
+                ["jbake", JBakeTask], ["jbakeInit", InitTask], ["jbakeServer", ServerTask],
+                ["jbakeRemove", RemoveTask], ["jbakeClean", CleanTask]
+        ]
+        tasks.each {
+            project.task(it[0], type: it[1])
+
+        }
     }
-
-
-
 
 }

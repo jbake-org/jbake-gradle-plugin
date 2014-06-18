@@ -12,8 +12,10 @@ import java.util.regex.Pattern
 
 /**
  * Created by mperry on 13/06/2014.
+ *
+ * Writes all resources from the package named <code>packageName</code> into <code>root</code>.  Currently just
+ * uses the fidbake template.  The JBake project uses a local zip to do this.
  */
-//@TypeChecked
 class InitTask extends AbstractTask {
 
     @TaskAction
@@ -27,8 +29,7 @@ class InitTask extends AbstractTask {
 
     Set<String> findResources() {
         def cb = new ConfigurationBuilder().setUrls(ClasspathHelper.forPackage(packageName)).setScanners(new ResourcesScanner())
-        def r2 = new Reflections(cb)
-        r2.getResources(Pattern.compile(".*"));
+        new Reflections(cb).getResources(Pattern.compile(".*"));
     }
 
     void writeAll() {
@@ -47,10 +48,8 @@ class InitTask extends AbstractTask {
 
     boolean writeResource(String s) {
         def b = s.startsWith(match)
-        println "match: $b matcher: $match"
         if (b) {
             def sub = s.substring(match.length())
-            println "resource: $s sub: $sub"
             def is = ClasspathHelper.getResourceAsStream("/$s")
             writeStream(is, sub)
         }
