@@ -17,12 +17,17 @@ buildscript {
 
 repositories {
     jcenter()
+    maven {
+        url "https://oss.sonatype.org/content/groups/public"
+    }
 }
 
 dependencies {
     compile gradleApi()
     compile localGroovy()
     compile 'org.jbake:jbake-core:2.3.0'
+    compile "com.github.mperry:fidbake:0.1-SNAPSHOT"
+    compile "org.reflections:reflections:0.9.8"
 }
 
 project.version = '0.2.1-SNAPSHOT'
