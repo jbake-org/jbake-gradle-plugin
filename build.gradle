@@ -28,6 +28,13 @@ dependencies {
     compile 'org.jbake:jbake-core:2.3.0'
     compile "com.github.mperry:fidbake:0.1-SNAPSHOT"
     compile "org.reflections:reflections:0.9.8"
+
+    compile "org.eclipse.jetty:jetty-server:8.1.+"
+    compile 'org.freemarker:freemarker:2.3.19'
+    compile "org.pegdown:pegdown:1.4.2"
+    compile "org.asciidoctor:asciidoctor-java-integration:0.1.4"
+    compile "org.thymeleaf:thymeleaf:2.1.2.RELEASE"
+
 }
 
 project.version = '0.2.1-SNAPSHOT'
