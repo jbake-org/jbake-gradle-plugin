@@ -48,24 +48,14 @@ class Search {
 		{ -> Files.copy(is, f.toPath()) } as IO
 	}
 
-	static IO<Long> writeStream(InputStream is,
-//								String sub,
-								File f) {
-//		def io = IOFunctions.<Long>unit { ->
-////			def f = new File(base, sub)
-//			f.getParentFile().mkdirs()
-//			f
-//		} //as IO<Long>
-//		bind(io) { File f ->
-//			writeFile(is, f)
-//		}
-				bind(IOFunctions.<Unit>unit({ ->
-					f.getParentFile().mkdirs()
-					Unit.unit()
-
-				} as P1), { Unit u ->
-					writeFile(is, f)
-				} as F)
+	static IO<Long> writeStream(InputStream is, File f) {
+		def io = IOFunctions.<Unit>unit({ ->
+			f.getParentFile().mkdirs()
+			Unit.unit()
+		} as P1)
+		bind(io, { Unit u ->
+			writeFile(is, f)
+		} as F)
 	}
 
 	static IO<Validation<String, Long>> writeResource(String resourcePath, File base, String packagePath) {
@@ -85,11 +75,8 @@ class Search {
 			IOFunctions.map(io2, { Long item ->
 				Validation.success(item)
 			} as F)
-
-
 		}
 	}
-
 
 }
 
