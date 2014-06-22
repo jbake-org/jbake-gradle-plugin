@@ -1,5 +1,11 @@
 package me.champeau.gradle
 
+import fj.F
+import fj.Unit
+import fj.data.IO
+import fj.data.IOFunctions
+import fj.data.Option
+import fj.data.Validation
 import org.gradle.api.internal.AbstractTask
 import org.gradle.api.tasks.TaskAction
 import org.reflections.Reflections
@@ -10,6 +16,11 @@ import org.reflections.util.ConfigurationBuilder
 import java.nio.file.Files
 import java.util.regex.Pattern
 
+import static fj.Unit.unit
+import static fj.data.IOFunctions.bind
+import static fj.data.Option.none
+import static fj.data.Option.some
+
 /**
  * Created by mperry on 13/06/2014.
  *
@@ -18,48 +29,42 @@ import java.util.regex.Pattern
  */
 class InitTask extends AbstractTask {
 
-    @TaskAction
+	String resourcesPackage = "org.jbake.template.resources"
+	String template = "fidbake"
+//	String resourceMatch = "${fullPackage()}/".replaceAll("\\.", "/")
+	File root = Resources.sourceDir(project)
+
+
+	@TaskAction
     void init() {
-        writeAll()
+        def list = Search.writeAll(fullPackage(resourcesPackage, template), root).run()
+//		println "result: $list"
+		list.filter({ Validation v ->
+			v.isFail()
+		} as F).each { Validation<String, Long> v ->
+			def s = v.isFail() ? "fail(${v.fail()})" : "success(${v.success()})"
+//			println "v: $s"
+			def s2 = "${v.fail()}"
+			println s2
+		}
     }
 
-    String packageName = "org.jbake.template.resources.fidbake"
-    String match = "$packageName/".replaceAll("\\.", "/")
-    File root = Resources.sourceDir(project)
+	static String fullPackage(String basePackage, String subPackage) {
+		"$basePackage.$subPackage"
+	}
 
-    Set<String> findResources() {
-        def cb = new ConfigurationBuilder().setUrls(ClasspathHelper.forPackage(packageName)).setScanners(new ResourcesScanner())
-        new Reflections(cb).getResources(Pattern.compile(".*"));
-    }
 
-    void writeAll() {
-        writeResources(findResources())
-    }
-
-    void writeFile(InputStream is, File f) {
-        Files.copy(is, f.toPath())
-    }
-
-    void writeStream(InputStream is, String sub) {
-        def f = new File(root, sub)
-        f.getParentFile().mkdirs()
-        writeFile(is, f)
-    }
-
-    boolean writeResource(String s) {
-        def b = s.startsWith(match)
-        if (b) {
-            def sub = s.substring(match.length())
-            def is = ClasspathHelper.getResourceAsStream("/$s")
-            writeStream(is, sub)
-        }
-        b
-    }
-
-    void writeResources(Set<String> props) {
-        props.each { String s ->
-            writeResource(s)
-        }
-    }
+//	IO<Unit> writeResource(String resourcePath, String resourcePrefix, File base) {
+//		def sub = resourcePath.substring(resourcePrefix.length())
+//		def is = ClasspathHelper.getResourceAsStream("/$resourcePath")
+//		writeStream(is, sub, base)
+//
+//	}
+//
+//    void writeResources(Set<String> props, File base) {
+//        props.each { String s ->
+//            writeResource(s, base)
+//        }
+//    }
 
 }

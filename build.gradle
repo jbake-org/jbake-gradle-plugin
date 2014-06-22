@@ -16,10 +16,12 @@ buildscript {
 }
 
 repositories {
+	maven {
+		url "https://oss.sonatype.org/content/groups/public"
+	}
+	mavenLocal()
     jcenter()
-    maven {
-        url "https://oss.sonatype.org/content/groups/public"
-    }
+
 }
 
 dependencies {
@@ -34,6 +36,8 @@ dependencies {
     compile "org.pegdown:pegdown:1.4.2"
     compile "org.asciidoctor:asciidoctor-java-integration:0.1.4"
     compile "org.thymeleaf:thymeleaf:2.1.2.RELEASE"
+
+	compile "org.functionaljava:functionaljava:4.2-SNAPSHOT"
 
 }
 
