@@ -15,5 +15,4 @@ class CleanTask extends AbstractTask {
         deleteDirOrThrow(project.buildDir)
     }
 
-
 }

@@ -16,5 +16,4 @@ class RemoveTask extends AbstractTask {
         deleteDirOrThrow(sourceDir(project))
     }
 
-
 }

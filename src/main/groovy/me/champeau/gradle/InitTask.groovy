@@ -20,10 +20,7 @@ class InitTask extends AbstractTask {
 	@TaskAction
     void init() {
         def list = Search.writeAll(fullPackage(resourcesPackage, template), root).run()
-//		println "result: $list"
-		list.filter({ Validation v ->
-			v.isFail()
-		} as F).each { Validation<String, Long> v ->
+		list.filter({ Validation v -> v.isFail() } as F).each { Validation<String, Long> v ->
 //			def s = v.isFail() ? "fail(${v.fail()})" : "success(${v.success()})"
 			def s2 = "${v.fail()}"
 			println s2

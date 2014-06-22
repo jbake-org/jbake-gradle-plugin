@@ -5,7 +5,6 @@ import fj.P1
 import fj.Unit
 import fj.data.IO
 import fj.data.IOFunctions
-import fj.data.Option
 import fj.data.Validation
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
@@ -16,8 +15,7 @@ import java.nio.file.Files
 import java.util.regex.Pattern
 
 import static fj.data.IOFunctions.bind
-import static fj.data.Option.none
-import static fj.data.Option.some
+import static fj.data.IOFunctions.map
 
 /**
  * Created by MarkPerry on 21/06/2014.
@@ -36,7 +34,7 @@ class Search {
 	}
 
 	static IO<fj.data.List<Validation<String, Long>>> writeAll(String packagePath, File base) {
-		IOFunctions.join(IOFunctions.map(findResources(packagePath), { Set<String> set ->
+		IOFunctions.join(map(findResources(packagePath), { Set<String> set ->
 			fj.data.List<String> list = fj.data.List.list((String[]) set.toArray());
 			IOFunctions.traverse(list, { String s ->
 				writeResource(s, base, packagePath)
@@ -72,7 +70,7 @@ class Search {
 			def io2 = bind(io, { InputStream is ->
 				writeStream(is, new File(base, sub))
 			} as F)
-			IOFunctions.map(io2, { Long item ->
+			map(io2, { Long item ->
 				Validation.success(item)
 			} as F)
 		}

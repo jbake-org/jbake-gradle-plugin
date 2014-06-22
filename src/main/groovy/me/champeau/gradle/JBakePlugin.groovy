@@ -26,7 +26,6 @@ class JBakePlugin implements Plugin<Project> {
         ]
         tasks.each {
             project.task(it[0], type: it[1])
-
         }
     }
 

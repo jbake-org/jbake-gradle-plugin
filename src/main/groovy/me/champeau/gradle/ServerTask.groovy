@@ -5,8 +5,6 @@ import org.gradle.api.tasks.TaskAction
 
 import static me.champeau.gradle.Resources.outputDir
 
-//import static me.champeau.gradle.Resources.*
-
 /**
  * Created by mperry on 18/06/2014.
  */
