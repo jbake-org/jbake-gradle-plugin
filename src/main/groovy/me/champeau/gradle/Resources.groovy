@@ -1,10 +1,12 @@
 package me.champeau.gradle
 
+import groovy.transform.TypeChecked
 import org.gradle.api.Project
 
 /**
  * Created by mperry on 18/06/2014.
  */
+@TypeChecked
 class Resources {
 
     static File sourceDir(Project p) {

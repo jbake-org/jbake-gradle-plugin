@@ -6,6 +6,8 @@ import fj.Unit
 import fj.data.IO
 import fj.data.IOFunctions
 import fj.data.Validation
+import groovy.transform.TypeChecked
+import groovy.transform.TypeCheckingMode
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
 import org.reflections.util.ClasspathHelper
@@ -20,6 +22,7 @@ import static fj.data.IOFunctions.map
 /**
  * Created by MarkPerry on 21/06/2014.
  */
+@TypeChecked(TypeCheckingMode.SKIP)
 class Search {
 
 	static String resourceMatcher(String packagePath) {

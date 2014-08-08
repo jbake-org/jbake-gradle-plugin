@@ -2,6 +2,7 @@ package me.champeau.gradle
 
 import fj.F
 import fj.data.Validation
+import groovy.transform.TypeChecked
 import org.gradle.api.internal.AbstractTask
 import org.gradle.api.tasks.TaskAction
 
@@ -11,6 +12,7 @@ import org.gradle.api.tasks.TaskAction
  * Writes all resources from the package named <code>packageName</code> into <code>root</code>.  Currently just
  * uses the fidbake template.  The JBake project uses a local zip to do this.
  */
+@TypeChecked
 class InitTask extends AbstractTask {
 
 	String resourcesPackage = "org.jbake.template.resources"
@@ -21,7 +23,6 @@ class InitTask extends AbstractTask {
     void init() {
         def list = Search.writeAll(fullPackage(resourcesPackage, template), root).run()
 		list.filter({ Validation v -> v.isFail() } as F).each { Validation<String, Long> v ->
-//			def s = v.isFail() ? "fail(${v.fail()})" : "success(${v.success()})"
 			def s2 = "${v.fail()}"
 			println s2
 		}

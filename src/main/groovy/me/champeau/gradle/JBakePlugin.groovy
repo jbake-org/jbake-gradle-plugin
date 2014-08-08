@@ -15,17 +15,24 @@
  */
 package me.champeau.gradle
 
+import groovy.transform.TypeChecked
+import groovy.transform.TypeCheckingMode
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+import static fj.P.p
+
+@TypeChecked
 class JBakePlugin implements Plugin<Project> {
+
+    @TypeChecked(TypeCheckingMode.SKIP)
     void apply(Project project) {
         def tasks = [
-                ["jbake", JBakeTask], ["jbakeInit", InitTask], ["jbakeServer", ServerTask],
-                ["jbakeRemove", RemoveTask], ["jbakeClean", CleanTask]
+                p("jbake", JBakeTask), p("jbakeInit", InitTask), p("jbakeServer", ServerTask),
+                p("jbakeRemove", RemoveTask), p("jbakeClean", CleanTask)
         ]
         tasks.each {
-            project.task(it[0], type: it[1])
+            project.task(it._1(), type: it._2())
         }
     }
 

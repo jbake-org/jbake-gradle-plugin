@@ -15,6 +15,7 @@
  */
 package me.champeau.gradle
 
+import groovy.transform.TypeChecked
 import org.apache.commons.configuration.CompositeConfiguration
 import org.apache.commons.configuration.MapConfiguration
 import org.gradle.api.internal.AbstractTask
@@ -27,6 +28,7 @@ import org.jbake.app.Oven
 import static me.champeau.gradle.Resources.outputDir
 import static me.champeau.gradle.Resources.sourceDir
 
+@TypeChecked
 class JBakeTask extends AbstractTask {
     @InputDirectory File input = sourceDir(project)
     @OutputDirectory File output = outputDir(project)
