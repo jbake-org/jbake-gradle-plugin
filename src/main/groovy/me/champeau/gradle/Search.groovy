@@ -22,7 +22,7 @@ import static fj.data.IOFunctions.map
 /**
  * Created by MarkPerry on 21/06/2014.
  */
-@TypeChecked(TypeCheckingMode.SKIP)
+@TypeChecked
 class Search {
 
 	static String resourceMatcher(String packagePath) {
@@ -36,6 +36,7 @@ class Search {
 		} as IO
 	}
 
+    @TypeChecked(TypeCheckingMode.SKIP)
 	static IO<fj.data.List<Validation<String, Long>>> writeAll(String packagePath, File base) {
 		IOFunctions.join(map(findResources(packagePath), { Set<String> set ->
 			fj.data.List<String> list = fj.data.List.list((String[]) set.toArray());
