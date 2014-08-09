@@ -16,12 +16,7 @@ buildscript {
 }
 
 repositories {
-	maven {
-		url "https://oss.sonatype.org/content/groups/public"
-	}
-	mavenLocal()
     jcenter()
-
 }
 
 dependencies {
@@ -38,7 +33,6 @@ dependencies {
     compile "org.thymeleaf:thymeleaf:2.1.2.RELEASE"
 
 	compile "org.functionaljava:functionaljava:4.2-beta-1"
-
     compile "org.codehaus.groovy:groovy-backports-compat23:2.3.6"
 
 }
