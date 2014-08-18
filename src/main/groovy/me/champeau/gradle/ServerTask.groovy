@@ -1,6 +1,5 @@
 package me.champeau.gradle
 
-import fj.Unit
 import groovy.transform.TypeChecked
 import org.gradle.api.internal.AbstractTask
 import org.gradle.api.tasks.Input
@@ -32,7 +31,7 @@ class ServerTask extends AbstractTask {
     }
 
     void doRefresh() {
-        Refresh.process({ WatchEvent<Path> we -> JBakeTask.bake(input, output, clearCache, configuration) })
+        Refresh.registerOnThread({ WatchEvent<Path> we -> JBakeTask.bake(input, output, clearCache, configuration) })
     }
 
 }

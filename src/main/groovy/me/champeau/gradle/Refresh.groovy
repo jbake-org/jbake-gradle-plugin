@@ -3,7 +3,9 @@ package me.champeau.gradle
 import com.github.mperry.watch.FileMonitor
 import com.github.mperry.watch.Util
 import fj.F
+import fj.P1
 import fj.Unit
+import fj.data.Stream
 import groovy.transform.TypeChecked
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -27,6 +29,7 @@ class Refresh {
     static Logger log = LoggerFactory.getLogger(Refresh.class)
 
     static ExecutorService exectorService = Executors.newWorkStealingPool(3)
+    static File DEFAULT_DIR = new File("src/jbake")
 //    Executors.newFixedThreadPool(4)
 
     static void processAsync(F<WatchEvent<Path>, Unit> f) {
@@ -35,9 +38,7 @@ class Refresh {
     }
 
     static void process(F<WatchEvent<Path>, Unit> f) {
-        def dir = new File("src/jbake")
-        log.info("Watching root dir: ${dir.canonicalPath}")
-        registerAll(dir, f)
+        registerThreadPerDir(DEFAULT_DIR, f)
     }
 
     static void registerAsync(File dir, F<WatchEvent<Path>, Unit> f) {
@@ -54,7 +55,15 @@ class Refresh {
 
         def p = FileMonitor.streamEvents(dir, FileMonitor.ALL_EVENTS)
         def s = p._3()._1()
-        s.foreach({ WatchEvent<Path> we ->
+        processStream(p._3(), f)
+    }
+
+    static void processStreamAsync(P1<Stream<WatchEvent<Path>>> p, F<WatchEvent<Path>, Unit> f) {
+        new Thread({ -> processStream(p, f)}).start()
+    }
+
+    static void processStream(P1<Stream<WatchEvent<Path>>> p, F<WatchEvent<Path>, Unit> f) {
+        p._1().foreach({ WatchEvent<Path> we ->
             Util.printWatchEvent(we)
             f.f(we)
             unit()
@@ -75,7 +84,7 @@ class Refresh {
 
     static F<Unit, Unit> EMPTY = { WatchEvent<Path> u -> unit() } as F
 
-    static void registerAll(File dir, F<WatchEvent<Path>, Unit> f) throws IOException {
+    static void registerThreadPerDir(File dir, F<WatchEvent<Path>, Unit> f) throws IOException {
         log.info("Registering with root dir: ${dir.canonicalPath}")
         def i = 0
         def ws = FileSystems.getDefault().newWatchService()
@@ -84,25 +93,30 @@ class Refresh {
             if (file.isDirectory()) {
                 i++
                 log.info("Submitting $i: ${dir.canonicalPath}")
-//                registerAsync(file, f)
-                registerWithPool(file, f)
+                registerAsync(file, f)
+//                registerWithPool(file, f)
             }
 
         }
+
     }
 
-    static void registerAll2(File dir, F<WatchEvent<Path>, Unit> f) throws IOException {
+    static void registerOnThread(F<WatchEvent<Path>, Unit> f) throws IOException {
+        registerOnThread(DEFAULT_DIR, f)
+    }
+
+
+    static void registerOnThread(File dir, F<WatchEvent<Path>, Unit> f) throws IOException {
         log.info("Registering with root dir: ${dir.canonicalPath}")
         def i = 0
         def ws = FileSystems.getDefault().newWatchService()
-        WatchKey key = null
-
+        WatchKey key = FileMonitor.register(dir, FileMonitor.ALL_EVENTS, ws)._2()
         dir.eachFileRecurse { File file ->
             if (file.isDirectory()) {
                 i++
-                log.info("Submitting $i: ${dir.canonicalPath}")
+                log.info("Submitting $i: ${file.canonicalPath}")
 //                registerAsync(file, f)
-                registerWithPool(file, f)
+//                registerWithPool(file, f)
                 def p2 = FileMonitor.register(file, FileMonitor.ALL_EVENTS, ws)
                 key = p2._2()
 
@@ -110,6 +124,7 @@ class Refresh {
 
         }
         def ps = FileMonitor.streamEvents(ws, key)
+        processStreamAsync(ps, f)
     }
 
 
