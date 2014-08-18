@@ -8,6 +8,9 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
+import java.nio.file.Path
+import java.nio.file.WatchEvent
+
 import static me.champeau.gradle.Resources.outputDir
 import static me.champeau.gradle.Resources.sourceDir
 
@@ -29,7 +32,7 @@ class ServerTask extends AbstractTask {
     }
 
     void doRefresh() {
-        Refresh.process({ Unit u -> JBakeTask.bake(input, output, clearCache, configuration) })
+        Refresh.process({ WatchEvent<Path> we -> JBakeTask.bake(input, output, clearCache, configuration) })
     }
 
 }
