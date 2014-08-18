@@ -37,8 +37,12 @@ class JBakeTask extends AbstractTask {
 
     @TaskAction
     void bake() {
-        new Oven(input, output, clearCache).with {
-            config = new CompositeConfiguration([new MapConfiguration(configuration), config])
+        bake(input, output, clearCache, configuration)
+    }
+
+    static void bake(File into, File out, Boolean clear, Map<String, Object> conf) {
+        new Oven(into, out, clear).with {
+            config = new CompositeConfiguration([new MapConfiguration(conf), config])
             setupPaths()
             bake()
         }

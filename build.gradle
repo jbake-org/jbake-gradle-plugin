@@ -15,8 +15,13 @@ buildscript {
     }
 }
 
+defaultTasks "build"
+
 repositories {
     jcenter()
+    maven {
+        url "https://oss.sonatype.org/content/groups/public"
+    }
 }
 
 dependencies {
@@ -34,6 +39,8 @@ dependencies {
 
 	compile "org.functionaljava:functionaljava:4.2-beta-1"
     compile "org.codehaus.groovy:groovy-backports-compat23:2.3.6"
+
+    compile "com.github.mperry:file-monitor:0.1-SNAPSHOT"
 
 }
 
