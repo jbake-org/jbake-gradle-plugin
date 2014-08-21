@@ -4,6 +4,7 @@ apply plugin: 'maven-publish'
 apply from: 'gradle/credentials.gradle'
 apply from: 'gradle/artifactory.gradle'
 apply from: 'gradle/bintray.gradle'
+apply from: "gradle/sonatype.gradle"
 
 buildscript {
     repositories {
@@ -57,6 +58,5 @@ task groovydocJar(type: Jar, dependsOn: groovydoc) {
     from groovydoc.destinationDir
 }
 
-task install(dependsOn: "publishToMavenLocal") << {
-
-}
+//task install(dependsOn: "publishToMavenLocal") << {
+//}
