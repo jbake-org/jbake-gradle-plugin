@@ -1,5 +1,6 @@
 package me.champeau.gradle
 
+import org.gradle.api.DefaultTask
 import org.gradle.api.internal.AbstractTask
 import org.gradle.api.tasks.TaskAction
 
@@ -11,7 +12,7 @@ import static me.champeau.gradle.Resources.deleteDirOrThrow
  * Created by mperry on 18/06/2014.
  */
 @TypeChecked
-class CleanTask extends AbstractTask {
+class CleanTask extends DefaultTask {
 
     @TaskAction
     void clean() {

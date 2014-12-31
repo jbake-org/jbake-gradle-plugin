@@ -15,36 +15,72 @@
  */
 package me.champeau.gradle
 
-import groovy.transform.TypeChecked
-import org.apache.commons.configuration.CompositeConfiguration
-import org.apache.commons.configuration.MapConfiguration
-import org.gradle.api.internal.AbstractTask
+import org.gradle.api.DefaultTask
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
-import org.jbake.app.Oven
 
-import static me.champeau.gradle.Resources.outputDir
-import static me.champeau.gradle.Resources.sourceDir
+import java.lang.reflect.Constructor
 
-@TypeChecked
-class JBakeTask extends AbstractTask {
-    @InputDirectory File input = sourceDir(project)
-    @OutputDirectory File output = outputDir(project)
+class JBakeTask extends DefaultTask {
+    @InputDirectory File input
+    @OutputDirectory File output
     @Input Map<String, Object> configuration = [:]
-    boolean clearCache = false
+    boolean clearCache
+
+    Configuration classpath
+    private static ClassLoader cl
+
+    JBakeProxy jbake
 
     @TaskAction
     void bake() {
-        bake(input, output, clearCache, configuration)
+        createJbake()
+        jbake.prepare()
+        mergeConfiguration()
+        jbake.jbake()
     }
 
-    static void bake(File into, File out, Boolean clear, Map<String, Object> conf) {
-        new Oven(into, out, clear).with {
-            config = new CompositeConfiguration([new MapConfiguration(conf), config])
-            setupPaths()
-            bake()
+    private def createJbake() {
+        if ( !jbake ) {
+            jbake = new JBakeProxyImpl(delegate: loadOvenDynamic(), input: getInput(), output: getOutput(), clearCache: getClearCache())
+        }
+    }
+
+    private def mergeConfiguration(){
+
+        //config = new CompositeConfiguration([createMapConfiguration(), jbake.getConfig()])
+        def delegate = loadClass('org.apache.commons.configuration.CompositeConfiguration')
+        Constructor constructor = delegate.getConstructor(Collection)
+        def config = constructor.newInstance([createMapConfiguration(), jbake.getConfig()])
+        jbake.setConfig( config )
+
+    }
+
+    private def createMapConfiguration(){
+        def delegate = loadClass('org.apache.commons.configuration.MapConfiguration')
+        Constructor constructor = delegate.getConstructor(Map)
+        constructor.newInstance(getConfiguration())
+    }
+
+    private def loadOvenDynamic() {
+        setupClassLoader()
+        loadClass("org.jbake.app.Oven")
+    }
+
+    private static Class loadClass(String className) {
+        cl.loadClass(className)
+    }
+
+    private def setupClassLoader() {
+        if (classpath?.files) {
+            def urls = classpath.files.collect { it.toURI().toURL() }
+            cl = new URLClassLoader(urls as URL[], Thread.currentThread().contextClassLoader)
+            Thread.currentThread().contextClassLoader = cl
+        } else {
+            cl = Thread.currentThread().contextClassLoader
         }
     }
 

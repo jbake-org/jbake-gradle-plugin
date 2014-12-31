@@ -1,6 +1,7 @@
 package me.champeau.gradle
 
 import groovy.transform.TypeChecked
+import org.gradle.api.DefaultTask
 import org.gradle.api.internal.AbstractTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
@@ -17,7 +18,7 @@ import static me.champeau.gradle.Resources.sourceDir
  * Created by mperry on 18/06/2014.
  */
 @TypeChecked
-class ServerTask extends AbstractTask {
+class ServerTask extends DefaultTask {
 
     @InputDirectory File input = sourceDir(project)
     @OutputDirectory File output = outputDir(project)
@@ -31,7 +32,10 @@ class ServerTask extends AbstractTask {
     }
 
     void doRefresh() {
-        Refresh.registerOnThread({ WatchEvent<Path> we -> JBakeTask.bake(input, output, clearCache, configuration) })
-    }
+        Refresh.registerOnThread({ WatchEvent<Path> we ->
+            new JBakeTask().bake()
+//            JBakeTask.bake(input, output, clearCache, configuration)
+        })
 
+    }
 }

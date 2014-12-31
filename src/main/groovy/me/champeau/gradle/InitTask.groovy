@@ -3,6 +3,7 @@ package me.champeau.gradle
 import fj.F
 import fj.data.Validation
 import groovy.transform.TypeChecked
+import org.gradle.api.DefaultTask
 import org.gradle.api.internal.AbstractTask
 import org.gradle.api.tasks.TaskAction
 
@@ -13,7 +14,7 @@ import org.gradle.api.tasks.TaskAction
  * uses the fidbake template.  The JBake project uses a local zip to do this.
  */
 @TypeChecked
-class InitTask extends AbstractTask {
+class InitTask extends DefaultTask {
 
 	String resourcesPackage = "org.jbake.template.resources"
 	String template = "fidbake"

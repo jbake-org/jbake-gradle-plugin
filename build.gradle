@@ -4,7 +4,7 @@ apply plugin: 'maven-publish'
 apply from: 'gradle/credentials.gradle'
 apply from: 'gradle/artifactory.gradle'
 apply from: 'gradle/bintray.gradle'
-apply from: "gradle/sonatype.gradle"
+apply from: "gradle/providedConfiguration.gradle"
 
 buildscript {
     repositories {
@@ -20,13 +20,13 @@ defaultTasks "build"
 
 repositories {
     jcenter()
-    mavenCentral()
 }
 
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    compile 'org.jbake:jbake-core:2.3.1'
+    provided 'org.jbake:jbake-core:2.3.2'
+
     compile "com.github.mperry:fidbake:0.1"
     compile "org.reflections:reflections:0.9.8"
 
@@ -38,9 +38,11 @@ dependencies {
 
 	compile "org.functionaljava:functionaljava:4.2"
     compile "org.codehaus.groovy:groovy-backports-compat23:2.3.6"
-
     compile "com.github.mperry:file-monitor:0.1"
 
+    testCompile('org.spockframework:spock-core:0.7-groovy-2.0') {
+        exclude group:'org.codehaus.groovy'
+    }
 }
 
 project.version = '0.2.1-SNAPSHOT'
@@ -55,5 +57,3 @@ task groovydocJar(type: Jar, dependsOn: groovydoc) {
     from groovydoc.destinationDir
 }
 
-//task install(dependsOn: "publishToMavenLocal") << {
-//}

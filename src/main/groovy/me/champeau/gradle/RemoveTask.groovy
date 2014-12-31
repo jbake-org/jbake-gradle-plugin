@@ -1,6 +1,7 @@
 package me.champeau.gradle
 
 import groovy.transform.TypeChecked
+import org.gradle.api.DefaultTask
 import org.gradle.api.internal.AbstractTask
 import org.gradle.api.tasks.TaskAction
 
@@ -11,7 +12,7 @@ import static me.champeau.gradle.Resources.sourceDir
  * Created by mperry on 18/06/2014.
  */
 @TypeChecked
-class RemoveTask extends AbstractTask {
+class RemoveTask extends DefaultTask {
 
     @TaskAction
     void clean() {
