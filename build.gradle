@@ -20,10 +20,7 @@ defaultTasks "build"
 
 repositories {
     jcenter()
-    mavenLocal()
-    maven {
-        url "https://oss.sonatype.org/content/groups/public"
-    }
+    mavenCentral()
 }
 
 dependencies {
@@ -39,10 +36,10 @@ dependencies {
     compile "org.asciidoctor:asciidoctor-java-integration:0.1.4"
     compile "org.thymeleaf:thymeleaf:2.1.2.RELEASE"
 
-	compile "org.functionaljava:functionaljava:4.2-beta-1"
+	compile "org.functionaljava:functionaljava:4.2"
     compile "org.codehaus.groovy:groovy-backports-compat23:2.3.6"
 
-    compile "com.github.mperry:file-monitor:0.1-SNAPSHOT"
+    compile "com.github.mperry:file-monitor:0.1"
 
 }
 
