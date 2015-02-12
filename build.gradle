@@ -5,6 +5,7 @@ apply from: 'gradle/credentials.gradle'
 apply from: 'gradle/artifactory.gradle'
 apply from: 'gradle/bintray.gradle'
 apply from: "gradle/providedConfiguration.gradle"
+apply from: "gradle/sonatype.gradle"
 
 buildscript {
     repositories {
@@ -20,6 +21,9 @@ defaultTasks "build"
 
 repositories {
     jcenter()
+    maven {
+        url sonatypeRepositoryUrl
+    }
 }
 
 dependencies {
@@ -38,14 +42,14 @@ dependencies {
 
 	compile "org.functionaljava:functionaljava:4.2"
     compile "org.codehaus.groovy:groovy-backports-compat23:2.3.6"
-    compile "com.github.mperry:file-monitor:0.1"
+    compile "com.github.mperry:file-monitor:0.2"
 
     testCompile('org.spockframework:spock-core:0.7-groovy-2.0') {
         exclude group:'org.codehaus.groovy'
     }
 }
 
-project.version = '0.2.1-SNAPSHOT'
+project.version = '0.3-SNAPSHOT'
 
 task sourceJar(type: Jar) {
     classifier = 'sources'
