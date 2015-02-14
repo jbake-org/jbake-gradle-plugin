@@ -28,7 +28,7 @@ class Refresh {
 
     static Logger log = LoggerFactory.getLogger(Refresh.class)
 
-    static ExecutorService exectorService = Executors.newWorkStealingPool(3)
+    static ExecutorService exectorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     static File DEFAULT_DIR = new File("src/jbake")
 //    Executors.newFixedThreadPool(4)
 
