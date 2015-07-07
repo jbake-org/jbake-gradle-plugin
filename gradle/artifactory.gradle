@@ -6,7 +6,7 @@ publishing {
             groupId = 'me.champeau.gradle'
 
             from components.java
-            artifact sourceJar
+            artifact sourcesJar
             artifact groovydocJar
 
             pom.withXml {

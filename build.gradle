@@ -50,11 +50,11 @@ dependencies {
     }
 }
 
-project.version = '0.3-SNAPSHOT'
+project.version = '0.3'
 
-task sourceJar(type: Jar) {
+task sourcesJar(type: Jar) {
     classifier = 'sources'
-    from sourceSets.main.allJava
+    from sourceSets.main.allSource
 }
 
 task groovydocJar(type: Jar, dependsOn: groovydoc) {
@@ -62,3 +62,13 @@ task groovydocJar(type: Jar, dependsOn: groovydoc) {
     from groovydoc.destinationDir
 }
 
+task javadocJar(type: Jar, dependsOn: "javadoc") {
+    classifier = 'javadoc'
+    from "build/docs/javadoc"
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}

@@ -7,7 +7,7 @@ Boolean doSigning() {
 
 
 ext {
-    isSnapshot = true
+    isSnapshot = false
 //    baseVersion = "0.1"
     snap = "-SNAPSHOT"
 
@@ -34,6 +34,15 @@ ext {
 }
 
 project.group = groupName
+
+if (doSigning()) {
+    apply plugin: "signing"
+    signing {
+//        required { doSigning(signingAllowed, doModule) }
+        sign configurations.archives
+    }
+}
+
 
 //uploadArchives.enabled = false
 uploadArchives {
@@ -69,6 +78,9 @@ uploadArchives {
                     }
 
                     developers {
+                        developer {
+                            email "maperry78@yahoo.com.au"
+                        }
                     }
                 }
 
