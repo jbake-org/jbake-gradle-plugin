@@ -1,0 +1,94 @@
+
+apply plugin: "maven"
+
+Boolean doSigning() {
+    signingEnabled.trim() == "true"
+}
+
+
+ext {
+    isSnapshot = false
+//    baseVersion = "0.1"
+    snap = "-SNAPSHOT"
+
+    sonatypeBaseUrl = "https://oss.sonatype.org"
+    sonatypeSnapshotUrl = "$sonatypeBaseUrl/content/repositories/snapshots/"
+    sonatypeRepositoryUrl = "$sonatypeBaseUrl/content/groups/public"
+    sonatypeReleaseUrl = "$sonatypeBaseUrl/service/local/staging/deploy/maven2/"
+    sonatypeUploadUrl = isSnapshot ? sonatypeSnapshotUrl : sonatypeReleaseUrl
+
+    projectUrl = "https://github.com/mperry/file-monitor"
+    projectName = "FileMonitor"
+    pomProjectName = "FileMonitor"
+    baseJarName = "file-monitor"
+
+    groupName = "com.github.mperry"
+    scmGitFile = "scm:git@github.com:mperry/file-monitor.git"
+    projectDescription = "Creates file systems events as stream or observable watch events"
+
+    licenseName = "The Apache Software License, Version 2.0"
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+
+    organisation = groupName
+
+}
+
+project.group = groupName
+
+if (doSigning()) {
+    apply plugin: "signing"
+    signing {
+//        required { doSigning(signingAllowed, doModule) }
+        sign configurations.archives
+    }
+}
+
+
+//uploadArchives.enabled = false
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            if (doSigning()) {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            }
+
+            repository(url: sonatypeUploadUrl) {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+            pom {
+                groupId = project.groupName
+                project {
+                    name pomProjectName
+                    packaging 'jar'
+                    description projectDescription
+                    url projectUrl
+
+                    scm {
+                        url "${projectUrl}.git"
+                        connection scmGitFile
+                        developerConnection scmGitFile
+                    }
+
+                    licenses {
+                        license {
+                            name licenseName
+                            url licenseUrl
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            email "maperry78@yahoo.com.au"
+                        }
+                    }
+                }
+
+            }
+
+        }
+    }
+}
+
+
+

@@ -19,8 +19,10 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 
-class JBakePlugin implements Plugin<Project> {
+import static fj.P.*
 
+
+class JBakePlugin implements Plugin<Project> {
 
     public static final String JBAKE = "jbake"
     Project project
@@ -39,13 +41,26 @@ class JBakePlugin implements Plugin<Project> {
 
         addDependenciesAfterEvaluate()
 
-        project.task('jbake', type: JBakeTask, group: 'Documentation', description: 'Bake a jbake project'){
-
-            classpath = configuration
-            conventionMapping.input = { project.file("$project.projectDir/$project.jbake.srcDirName") }
-            conventionMapping.output = { project.file("$project.buildDir/$project.jbake.destDirName") }
-            conventionMapping.clearCache = { project.jbake.clearCache }
-            conventionMapping.configuration = { project.jbake.configuration }
+        def thinTasks = [
+                p("jbakeInit", InitTask, "Documentation", "Initialise a jbake project"),
+                p("jbakeRemove", RemoveTask, "Documentation", "Remove the jbake project"),
+                p("jbakeClean", CleanTask, "Documentation", "Clean the jbake output"),
+                p("jbakeServer", ServerTask, "Documentation", "Start the jbake server")
+        ]
+        thinTasks.each {
+            project.task(it._1(), type: it._2(), group: it._3(), description: it._4())
+        }
+        def tasks = [
+                p('jbake', JBakeTask, 'Documentation', 'Bake a jbake project')
+        ]
+        tasks.each {
+            project.task(it._1(), type: it._2(), group: it._3(), description: it._4()) {
+                classpath = configuration
+                conventionMapping.input = { project.file("$project.projectDir/$project.jbake.srcDirName") }
+                conventionMapping.output = { project.file("$project.buildDir/$project.jbake.destDirName") }
+                conventionMapping.clearCache = { project.jbake.clearCache }
+                conventionMapping.configuration = { project.jbake.configuration }
+            }
         }
 
     }
