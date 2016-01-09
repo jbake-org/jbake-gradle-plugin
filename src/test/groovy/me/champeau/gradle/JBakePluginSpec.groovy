@@ -50,10 +50,10 @@ class JBakePluginSpec extends Specification {
 
         where:
         group             | name                           | version
-        'org.jbake'       | 'jbake-core'                   | '2.3.2'
-        'org.freemarker'  | 'freemarker'                   | '2.3.19'
+        'org.jbake'       | 'jbake-core'                   | '2.4.0'
+        'org.freemarker'  | 'freemarker'                   | '2.3.20'
         'org.pegdown'     | 'pegdown'                      | '1.4.2'
-        'org.asciidoctor' | 'asciidoctorj'                 | '1.5.1'
+        'org.asciidoctor' | 'asciidoctorj'                 | '1.5.2'
 
     }
 
@@ -84,7 +84,7 @@ class JBakePluginSpec extends Specification {
         project.configurations.jbake.dependencies.find {
             it.group == 'org.asciidoctor' &&
             it.name == 'asciidoctorj' &&
-            it.version == '1.5.1'
+            it.version == '1.5.2'
         }
     }
 

@@ -9,6 +9,7 @@ A few of the sites that use the plugin and serve as a good example are:
 * https://github.com/melix/blog
 * https://github.com/danhyun/blog
 * https://github.com/msgilligan/msgilligan.github.io
+* https://github.com/antonmry/antonmry.github.io
 
 == Usage
 
@@ -22,7 +23,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'me.champeau.gradle:jbake-gradle-plugin:0.2'
+    classpath 'me.champeau.gradle:jbake-gradle-plugin:0.3'
   }
 }
 
@@ -55,7 +56,7 @@ jbake {
 }
 ----
 
-The default is 2.3.2.
+The default is 2.4.0
 
 === Render Engine configuration
 
