@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.champeau.gradle
+package me.champeau.gradle.tasks
 
+import me.champeau.gradle.JBakeProxy
+import me.champeau.gradle.JBakeProxyImpl
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.Input
@@ -24,7 +26,7 @@ import org.gradle.api.tasks.TaskAction
 
 import java.lang.reflect.Constructor
 
-class JBakeTask extends DefaultTask {
+class JBakeBuild extends DefaultTask {
     @InputDirectory File input
     @OutputDirectory File output
     @Input Map<String, Object> configuration = [:]
