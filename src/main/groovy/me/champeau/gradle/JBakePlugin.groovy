@@ -15,6 +15,8 @@
  */
 package me.champeau.gradle
 
+import me.champeau.gradle.tasks.JBakeBuild
+import me.champeau.gradle.tasks.JBakeClean
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
@@ -39,7 +41,7 @@ class JBakePlugin implements Plugin<Project> {
 
         addDependenciesAfterEvaluate()
 
-        project.task('jbake', type: JBakeTask, group: 'Documentation', description: 'Bake a jbake project'){
+        project.task('jbakeBuild', type: JBakeBuild, group: 'Documentation', description: 'Bake a jbake project'){
 
             classpath = configuration
             conventionMapping.input = { project.file("$project.projectDir/$project.jbake.srcDirName") }
@@ -47,6 +49,8 @@ class JBakePlugin implements Plugin<Project> {
             conventionMapping.clearCache = { project.jbake.clearCache }
             conventionMapping.configuration = { project.jbake.configuration }
         }
+
+        project.task('jbakeClean', type: JBakeClean, group: 'Documentation', description: 'Delete the build directory')
 
     }
 

@@ -1,5 +1,7 @@
 package me.champeau.gradle
 
+import me.champeau.gradle.tasks.JBakeBuild
+import me.champeau.gradle.tasks.JBakeClean
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Specification
@@ -18,11 +20,16 @@ class JBakePluginSpec extends Specification {
         project.apply plugin: PLUGIN_ID
     }
 
-
-    def "should add a JBakeTask"(){
+    def "should add a JBakeClean"(){
 
         expect:
-        project.tasks.jbake instanceof JBakeTask
+        project.tasks.jbakeClean instanceof JBakeClean
+    }
+
+    def "should add a JBakeBuild"(){
+
+        expect:
+        project.tasks.jbakeBuild instanceof JBakeBuild
     }
 
     def "should add jbake configuration"(){
@@ -114,7 +121,7 @@ class JBakePluginSpec extends Specification {
         project.jbake.srcDirName = srcDirName
 
         then:
-        project.tasks.jbake.input == expectedFile
+        project.tasks.jbakeBuild.input == expectedFile
     }
 
     def "output dir should be configured by extension"(){
@@ -126,7 +133,7 @@ class JBakePluginSpec extends Specification {
         project.jbake.destDirName = destDirName
 
         then:
-        project.tasks.jbake.output == expectedFile
+        project.tasks.jbakeBuild.output == expectedFile
     }
 
     def "clearcache should be configured by extension"(){
@@ -137,7 +144,7 @@ class JBakePluginSpec extends Specification {
         project.jbake.clearCache = clearCache
 
         then:
-        project.tasks.jbake.clearCache == clearCache
+        project.tasks.jbakeBuild.clearCache == clearCache
     }
 
     def "should be configurable by extension"(){
@@ -149,7 +156,7 @@ class JBakePluginSpec extends Specification {
         project.jbake.configuration = configuration
 
         then:
-        project.tasks.jbake.configuration['render.tags'] == false
+        project.tasks.jbakeBuild.configuration['render.tags'] == false
     }
 
 }
