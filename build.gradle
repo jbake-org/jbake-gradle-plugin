@@ -29,7 +29,6 @@ plugins {
 }
 
 apply from: 'gradle/credentials.gradle'
-apply from: 'gradle/publishing.gradle'
 apply from: 'gradle/code-quality.gradle'
 
 gradlePlugin {
@@ -160,3 +159,5 @@ jacocoTestReport {
         html.enabled = true
     }
 }
+
+apply from: 'gradle/publishing.gradle'

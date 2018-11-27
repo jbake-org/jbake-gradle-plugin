@@ -22,7 +22,7 @@ import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class PluginIntegrationSpec extends Specification {
-    private final TemporaryFolder folder = new TemporaryFolder()
+    private TemporaryFolder folder = new TemporaryFolder()
 
     File buildFile
     boolean debug = false
