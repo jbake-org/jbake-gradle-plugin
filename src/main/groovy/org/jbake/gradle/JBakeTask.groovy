@@ -20,6 +20,7 @@ package org.jbake.gradle
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
@@ -33,11 +34,9 @@ class JBakeTask extends DefaultTask {
     @InputDirectory File input
     @OutputDirectory File output
     @Input Map<String, Object> configuration = [:]
-    @Input @Optional
-    boolean clearCache
+    @Input boolean clearCache = false
+    @InputFiles Configuration classpath
 
-    @Input @Optional
-    Configuration classpath
     private static ClassLoader cl
 
     private JBakeProxy jbake

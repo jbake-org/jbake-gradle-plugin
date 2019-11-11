@@ -30,7 +30,7 @@ import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 class JbakeIntegrationSpec extends PluginIntegrationSpec {
 
     @Shared
-    String latestGradleVersion = '5.1'
+    String latestGradleVersion = '6.0'
 
     @Shared
     String latestJbakeVersion = '2.6.4'
@@ -74,6 +74,7 @@ class JbakeIntegrationSpec extends PluginIntegrationSpec {
         where:
         version             | jdk9Compatible
         '5.0'               | true      // base version
+        '5.6.4'             | true      // latest 5.x version
         latestGradleVersion | true      // latest release, deprecations & warnings
     }
 

@@ -20,6 +20,7 @@ package org.jbake.gradle
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
@@ -32,9 +33,8 @@ class JBakeInitTask extends DefaultTask {
     @Input @Optional String templateUrl
     @OutputDirectory File outputDir
     @Input Map<String, Object> configuration = [:]
+    @InputFiles Configuration classpath
 
-    @Input @Optional
-    Configuration classpath
     private static ClassLoader cl
 
     private JBakeInitProxy init

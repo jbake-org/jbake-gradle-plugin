@@ -21,6 +21,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
@@ -30,11 +31,9 @@ class JBakeServeTask extends DefaultTask {
     @InputDirectory File input
     @Input Map<String, Object> configuration = [:]
     @Input String port = '8080'
+    @InputFiles Configuration classpath
 
-    @Input @Optional
-    Configuration classpath
     private static ClassLoader cl
-
 
     private JettyServerProxy jettyServer
 
