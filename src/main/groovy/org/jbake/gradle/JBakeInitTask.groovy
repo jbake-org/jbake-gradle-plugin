@@ -38,7 +38,7 @@ class JBakeInitTask extends DefaultTask {
     @Classpath @Optional
     Configuration classpath
 
-    final WorkerExecutor executor
+    private final WorkerExecutor executor
 
     @Inject
     JBakeInitTask(WorkerExecutor executor) {
