@@ -77,6 +77,7 @@ class JBakePlugin implements Plugin<Project> {
             void execute(JBakeInitTask t) {
                 t.group = 'Documentation'
                 t.description = 'Setup a jbake project'
+                t.classpath = configuration
                 t.template = jbakeExtension.template
                 t.templateUrl = jbakeExtension.templateUrl
                 t.outputDir = project.layout.projectDirectory.file(jbakeExtension.srcDirName).asFile

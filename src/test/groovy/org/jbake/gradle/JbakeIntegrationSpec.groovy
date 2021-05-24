@@ -156,4 +156,52 @@ class JbakeIntegrationSpec extends PluginIntegrationSpec {
         then:
         result.output.contains("This plugin does not support gradle versions <= 5.6")
     }
+
+    def "should initialize with example project"() {
+        given:
+        buildFile << """
+            plugins {
+                id 'org.jbake.site'
+            }
+        """
+        !new File(tempDir, "src/jbake/templates").exists()
+        !new File(tempDir, "src/jbake/assets").exists()
+        !new File(tempDir, "src/jbake/content").exists()
+
+
+        when:
+        BuildResult result = runTasksWithSuccess('bakeInit')
+
+        then:
+        result.output.contains("Base folder structure successfully created.")
+        new File(tempDir, "src/jbake/templates").exists()
+        new File(tempDir, "src/jbake/assets").exists()
+        new File(tempDir, "src/jbake/content").exists()
+    }
+
+    def "should initialize with from given zip url"() {
+        given:
+        buildFile << """
+            plugins {
+                id 'org.jbake.site'
+            }
+            
+            jbake {
+                templateUrl = 'https://github.com/jbake-org/jbake-example-project-groovy-mte/archive/master.zip'
+            }
+        """
+        !new File(tempDir, "src/jbake/templates").exists()
+        !new File(tempDir, "src/jbake/assets").exists()
+        !new File(tempDir, "src/jbake/content").exists()
+
+
+        when:
+        BuildResult result = runTasksWithSuccess('bakeInit')
+
+        then:
+        result.output.contains("Base folder structure successfully created.")
+        new File(tempDir, "src/jbake/templates/page.tpl").exists()
+        new File(tempDir, "src/jbake/assets").exists()
+        new File(tempDir, "src/jbake/content").exists()
+    }
 }
