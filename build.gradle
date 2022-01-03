@@ -34,7 +34,7 @@ config {
         specification { enabled = false }
 
         links {
-            website      = "https://github.com/jbake-org/${project.rootProject.name}"
+            website      = "https://github.com/jbake-org/${project.rootProject.name}/tree/v${project.rootProject.version}"
             issueTracker = "https://github.com/jbake-org/${project.rootProject.name}/issues"
             scm          = "https://github.com/jbake-org/${project.rootProject.name}.git"
         }
