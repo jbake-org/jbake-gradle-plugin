@@ -45,6 +45,20 @@ This will add a `bake` task to your build, which will search for a standard http
 
 WARNING: versions prior to `1.0.0` had a task named `jbake`. This task has been renamed to `bake` since `1.0.0`.
 
+The plugin needs to be able to download dependencies from a maven repository (like maven central), so you need to configure this as well. Typically in your `build.gradle` file you might want to add this section at the top of the file:
+
+[source,groovy]
+----
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath  'commons-configuration:commons-configuration:1.10'
+    }
+}
+----
+
 === Init
 
 You can initialise the project structure by running the following command:
