@@ -19,7 +19,6 @@ package org.jbake.gradle
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
@@ -46,7 +45,6 @@ class JBakeServeTask extends DefaultTask {
 
     @TaskAction
     void serve() {
-        logging.level = LogLevel.INFO
         createJettyServer()
         jettyServer.prepare()
         println("Starting server. Browse to http://localhost:${getPort()}")
